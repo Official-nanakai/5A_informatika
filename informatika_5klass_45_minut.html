@@ -1,0 +1,341 @@
+
+<h2 class="sr-only">Интерактивный план урока информатики для 5 класса — 45 минут</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+
+.lesson-header {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lesson-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.lesson-sub { font-size: 13px; color: var(--color-text-secondary); margin-top: 2px; }
+
+.timer-block { text-align: right; }
+.timer-display { font-size: 28px; font-weight: 500; color: var(--color-text-primary); font-variant-numeric: tabular-nums; }
+.timer-label { font-size: 11px; color: var(--color-text-secondary); }
+
+.timer-btns { display: flex; gap: 6px; margin-top: 6px; justify-content: flex-end; }
+.timer-btns button { font-size: 12px; padding: 4px 10px; }
+
+.steps-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.step-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  position: relative;
+}
+.step-card:hover { border-color: var(--color-border-secondary); }
+.step-card.active { border: 2px solid #1D9E75; }
+.step-card.done { background: var(--color-background-secondary); }
+
+.step-top { display: flex; align-items: center; gap: 10px; }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 500; flex-shrink: 0;
+  background: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+}
+.step-card.active .step-num { background: #1D9E75; color: #fff; }
+.step-card.done .step-num { background: #639922; color: #fff; }
+
+.step-info { flex: 1; }
+.step-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.step-time { font-size: 12px; color: var(--color-text-secondary); }
+
+.step-badge {
+  font-size: 11px; padding: 3px 8px;
+  border-radius: var(--border-radius-md);
+  background: var(--color-background-secondary);
+  color: var(--color-text-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+}
+.step-card.active .step-badge { background: #E1F5EE; color: #0F6E56; border-color: #5DCAA5; }
+
+.step-body { display: none; margin-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 10px; }
+.step-card.active .step-body { display: block; }
+
+.task-list { list-style: none; padding: 0; }
+.task-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--color-text-primary);
+  padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary);
+  line-height: 1.5;
+}
+.task-list li:last-child { border-bottom: none; }
+.task-list li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: #1D9E75; flex-shrink: 0; margin-top: 6px;
+}
+
+.hint-box {
+  background: #E1F5EEcc;
+  border: 0.5px solid #5DCAA5;
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #085041;
+}
+.hint-title { font-weight: 500; margin-bottom: 3px; font-size: 12px; }
+
+.warning-box {
+  background: #FAEEDA99;
+  border: 0.5px solid #EF9F27;
+  border-radius: var(--border-radius-md);
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #633806;
+}
+
+.progress-bar {
+  background: var(--color-background-secondary);
+  border-radius: 4px;
+  height: 6px;
+  margin: 8px 0 1rem;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: #1D9E75;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.done-btn {
+  font-size: 12px; padding: 5px 12px; margin-top: 8px;
+  background: #1D9E75; color: #fff;
+  border: none; border-radius: var(--border-radius-md);
+  cursor: pointer;
+}
+.done-btn:hover { background: #0F6E56; }
+
+.footer-note {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+</style>
+
+<div class="lesson-header">
+  <div>
+    <div class="lesson-title">§31 — Файлы общего доступа + Проект</div>
+    <div class="lesson-sub">5 класс · Информатика · 45 минут</div>
+    <div style="margin-top: 6px;">
+      <div class="progress-bar" style="width:260px;margin:0;">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="timer-block">
+    <div class="timer-display" id="timerDisplay">45:00</div>
+    <div class="timer-label">до конца урока</div>
+    <div class="timer-btns">
+      <button id="startBtn" onclick="startTimer()">Запустить</button>
+      <button onclick="resetTimer()">Сброс</button>
+    </div>
+  </div>
+</div>
+
+<div class="steps-grid" id="stepsGrid"></div>
+
+<div class="footer-note">
+  Если не знаешь как найти кнопку — введи в поиске: <strong>«как сделать [действие] в Word»</strong> или <strong>«как открыть общий доступ к файлу»</strong>. Интернет знает всё!
+</div>
+
+<script>
+const steps = [
+  {
+    title: "Повторение и объяснение задания",
+    time: "0–5 мин",
+    badge: "Слушаем",
+    tasks: [
+      "Учитель объясняет задание §31 — что такое файлы общего доступа",
+      "Слушаем внимательно — потом сам будешь делать",
+      "Запиши в тетрадь: что ты будешь создавать сегодня"
+    ],
+    hint: "Если пропустил объяснение — прочитай страницу §31 в учебнике. Там всё написано!",
+    warn: null
+  },
+  {
+    title: "Уровень A — Приглашение на родительское собрание",
+    time: "5–15 мин",
+    badge: "Самостоятельно",
+    tasks: [
+      "Открой текстовый редактор (Word или LibreOffice)",
+      "Напечатай приглашение на родительское собрание (как Бибинур в учебнике)",
+      "Сохрани файл на Рабочий стол под своим именем",
+      "Сделай файл общедоступным — следуй подсказке ниже",
+      "Запиши в тетрадь: как другие могут использовать этот файл?"
+    ],
+    hint: "Как открыть общий доступ в Word:\n1. Файл → Сохранить как\n2. Или поищи в интернете: «как открыть общий доступ к документу Word»",
+    warn: null
+  },
+  {
+    title: "Уровень B — Эссе на тему по выбору",
+    time: "15–25 мин",
+    badge: "Самостоятельно",
+    tasks: [
+      "Выбери ОДНУ тему: «Я патриот своей страны» / «Новости науки и техники» / «Моя будущая профессия»",
+      "Напиши небольшое эссе (5–8 предложений) в текстовом редакторе",
+      "Сохрани файл на Рабочий стол",
+      "Разреши общий доступ к файлу"
+    ],
+    hint: "Эссе — это твои мысли на тему. Нет «правильного» ответа. Главное — написать честно что ты думаешь.",
+    warn: null
+  },
+  {
+    title: "Уровень C — Копирование и редактирование",
+    time: "25–35 мин",
+    badge: "Самостоятельно",
+    tasks: [
+      "Скопируй любой файл из папки общего доступа на свой компьютер",
+      "Открой файл и отредактируй его — добавь хотя бы 2–3 предложения",
+      "Отправь файл другу (или учителю — способ уточни у учителя)",
+      "Запиши в тетрадь алгоритм копирования файла (по шагам)"
+    ],
+    hint: "Не знаешь как скопировать файл? Поищи в Google: «как скопировать файл из общей папки на компьютер»",
+    warn: null
+  },
+  {
+    title: "Проект — Установка пароля на документ",
+    time: "35–42 мин",
+    badge: "Проект",
+    tasks: [
+      "Открой Word. Напечатай короткое эссе на тему «Цифровой Казахстан» (5–7 предложений)",
+      "Отредактируй и оформи текст",
+      "Установи пароль на документ: Файл → Сведения → Защита документа → Зашифровать с паролем",
+      "ВАЖНО: Запиши пароль в тетрадь — если забудешь, документ не откроешь!"
+    ],
+    hint: "Не можешь найти «Защита документа»?\nПоищи в интернете: «как поставить пароль на документ Word 2016» (или какой год стоит на компьютере)",
+    warn: "Не ставь один и тот же пароль на все документы. И не используй «12345» — это не защита!"
+  },
+  {
+    title: "Итог — Рефлексия",
+    time: "42–45 мин",
+    badge: "Обсуждение",
+    tasks: [
+      "Подумай и ответь себе: понравилась ли работа?",
+      "Запиши в тетрадь: что получилось легко, что было трудно",
+      "Подними руку если хочешь поделиться мыслями с классом",
+      "Сдай тетрадь учителю на проверку (или покажи записи)"
+    ],
+    hint: "Не стесняйся сказать что было непонятно — это помогает учителю улучшить урок!",
+    warn: null
+  }
+];
+
+let completedSteps = new Set();
+let activeStep = 0;
+
+function render() {
+  const grid = document.getElementById('stepsGrid');
+  grid.innerHTML = '';
+  steps.forEach((s, i) => {
+    const card = document.createElement('div');
+    const isDone = completedSteps.has(i);
+    const isActive = activeStep === i;
+    card.className = 'step-card' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    
+    const tasksHTML = s.tasks.map(t => `<li>${t}</li>`).join('');
+    const hintHTML = s.hint ? `<div class="hint-box"><div class="hint-title">Подсказка</div>${s.hint.replace(/\n/g,'<br>')}</div>` : '';
+    const warnHTML = s.warn ? `<div class="warning-box">${s.warn}</div>` : '';
+    const doneHTML = isActive && !isDone ? `<button class="done-btn" onclick="markDone(${i})">Готово — перейти дальше</button>` : '';
+    
+    card.innerHTML = `
+      <div class="step-top" onclick="toggleStep(${i})">
+        <div class="step-num">${isDone ? '✓' : i+1}</div>
+        <div class="step-info">
+          <div class="step-title">${s.title}</div>
+          <div class="step-time">${s.time}</div>
+        </div>
+        <div class="step-badge">${s.badge}</div>
+      </div>
+      <div class="step-body">
+        <ul class="task-list">${tasksHTML}</ul>
+        ${hintHTML}${warnHTML}${doneHTML}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  
+  const pct = (completedSteps.size / steps.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function toggleStep(i) {
+  activeStep = activeStep === i ? -1 : i;
+  render();
+}
+
+function markDone(i) {
+  completedSteps.add(i);
+  activeStep = i + 1 < steps.length ? i + 1 : i;
+  render();
+}
+
+let timerInterval = null;
+let secondsLeft = 45 * 60;
+let running = false;
+
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+}
+
+function startTimer() {
+  if (running) {
+    clearInterval(timerInterval);
+    running = false;
+    document.getElementById('startBtn').textContent = 'Продолжить';
+    return;
+  }
+  running = true;
+  document.getElementById('startBtn').textContent = 'Пауза';
+  timerInterval = setInterval(() => {
+    if (secondsLeft > 0) {
+      secondsLeft--;
+      document.getElementById('timerDisplay').textContent = formatTime(secondsLeft);
+    } else {
+      clearInterval(timerInterval);
+      document.getElementById('timerDisplay').textContent = '00:00';
+      document.getElementById('startBtn').textContent = 'Готово!';
+      running = false;
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  running = false;
+  secondsLeft = 45 * 60;
+  document.getElementById('timerDisplay').textContent = '45:00';
+  document.getElementById('startBtn').textContent = 'Запустить';
+}
+
+render();
+</script>
